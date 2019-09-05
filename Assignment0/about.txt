@@ -1,0 +1,14 @@
+i.	Jennifer Stone			
+	jennifer.v.stone@maine.edu
+
+ii. Mostly have experience using Java and some JavaScript and Python. No experience with C#. 
+	I have used git a fair amount both in school and during an internship.
+
+iii. Web development, both front and back end.  
+
+iv.  Software Engineer
+
+v. 	Learn C#, possibly ASP.NET. Work on a larger project if possible that is closer to how C# is used 
+	in the real world.
+
+vi. I learn best by having a project to work on and resources to look at as needed. 
