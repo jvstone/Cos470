@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
@@ -10,16 +11,26 @@ namespace DollarWords
         const int CharacterOffset = (int)'A' - 1;
         const string InputFilePath = @"C:\Users\jenni\Desktop\Fall 2019\COS 470\Cos470\Assignment1\DollarWords\words.txt";
         const string OutputFilePath = @"C:\Users\jenni\Desktop\Fall 2019\COS 470\Cos470\Assignment1\DollarWords\DollarWords.txt";
+
         static void Main(string[] args)
         {
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
 
             var words = ReadWords(InputFilePath);
             var dollarWords = GetDollarWords(words);
             OutputToFile(OutputFilePath, dollarWords);
             OutputAggregateDataToConsole(words, dollarWords);
+
+            stopwatch.Stop();
+            Console.WriteLine("Total elapsed time: {0} ms", stopwatch.ElapsedMilliseconds);
             Console.Read();
         }
-
+        /// <summary>
+        /// Reads words from a file to a list where each word is written on a new line
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         public static List<string> ReadWords(String path)
         {
             var words = new List<string>();
@@ -33,21 +44,41 @@ namespace DollarWords
             return words;
         }
 
+        /// <summary>
+        /// Return a list of words whose value sums to 100 
+        /// </summary>
+        /// <param name="words"></param>
+        /// <returns></returns>
         public static List<string> GetDollarWords(List<string> words)
         {
             return words.Where(w => StringToIntegerValue(w) == 100).ToList();
         }
 
+        /// <summary>
+        /// Get the most expensive word based on letter value defined by StringToIntegerValue
+        /// </summary>
+        /// <param name="words"></param>
+        /// <returns></returns>
         public static string GetMostExpensiveWord(List<string> words)
         {
             return words.OrderByDescending(w => StringToIntegerValue(w)).First();
         }
 
+        /// <summary>
+        /// Get the longest word 
+        /// </summary>
+        /// <param name="words"></param>
+        /// <returns></returns>
         public static string GetLongestWord(List<String> words)
         {
             return words.OrderByDescending(w => w.Length).First();
         }
 
+        /// <summary>
+        /// Get the shortest word
+        /// </summary>
+        /// <param name="words"></param>
+        /// <returns></returns>
         public static string GetShortestWord(List<String> words)
         {
             return words.OrderBy(w => w.Length).First();
@@ -75,7 +106,6 @@ namespace DollarWords
 
         /// <summary>
         /// Output aggregate information
-        /// 
         /// </summary>
         /// <param name="words"></param>
         /// <param name="dollarWords"></param>
@@ -87,6 +117,11 @@ namespace DollarWords
             Console.WriteLine("Most Expensive word: {0}", GetMostExpensiveWord( words));
         }
 
+        /// <summary>
+        /// Output a list to the file specified by outputPath. One entry per line. 
+        /// </summary>
+        /// <param name="outputPath"></param>
+        /// <param name="words"></param>
         public static void OutputToFile(string outputPath, List<string> words)
         {
             using (StreamWriter outputFile = new StreamWriter(outputPath))
