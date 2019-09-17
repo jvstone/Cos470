@@ -12,8 +12,26 @@ namespace DollarAddresses
             var config = new ConfigurationBuilder()
                               .AddJsonFile("appsettings.json", false, true)
                               .Build();
+
             var offset = int.Parse( config["CharOffset"]);
-            var dollarAddresses = new DollarAddressHelper(offset);
+            var dollarAddressHelper = new DollarAddressHelper(offset);
+
+            var client = new AddressApiClient(config["URL"], config["City"]);
+
+            var dollarAddresses = dollarAddressHelper.GetDollarAddresses(client.GetAddressesFromApi());
+            OutputAddressesToConsole(dollarAddresses, config["City"]);
         }
+
+        public static void OutputAddressesToConsole(List<Address> addresses, string city)
+        {
+            Console.WriteLine($"The following are dollar addresses in {city}");
+            foreach(var address in addresses)
+            {
+                Console.WriteLine($"{address.ADDRESS_NUMBER} {address.STREETNAME} {address.SUFFIX}");
+            }
+        }
+        
+
+        
     }
 }

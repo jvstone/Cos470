@@ -17,13 +17,13 @@ namespace DollarAddresses
         }
 
         /// <summary>
-        /// Return a list of words whose value sums to 100 
+        /// Return a list of where the Streename has an integer value that matches the address number
         /// </summary>
         /// <param name="words"></param>
         /// <returns></returns>
-        public List<string> GetDollarWords(List<string> words)
+        public List<Address> GetDollarAddresses(List<Address> addresses)
         {
-            return words.Where(w => StringToIntegerValue(w) == 100).ToList();
+            return addresses.Where(a => StringToIntegerValue((a.STREETNAME + a.SUFFIX)) == a.ADDRESS_NUMBER).ToList();
         }
 
         /// <summary>
@@ -31,10 +31,10 @@ namespace DollarAddresses
         /// </summary>
         /// <param name="character"></param>
         /// <returns></returns>
-        public  int StringToIntegerValue(String word)
+        public  int StringToIntegerValue(String address)
         {
             int wordValue = 0;
-            foreach (char character in word)
+            foreach (char character in address)
             {
                 int charVal = 0;
                 if (char.IsLetter(character))
