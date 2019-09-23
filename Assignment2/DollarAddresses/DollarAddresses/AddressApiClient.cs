@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Linq;
+using System.Web;
 
 namespace DollarAddresses
 {
@@ -16,11 +17,19 @@ namespace DollarAddresses
             this.city = city;
         }
 
+        /// <summary>
+        /// Return a list of Addresses from an API. 
+        /// </summary>
+        /// <returns></returns>
         public List<Address> GetAddressesFromApi()
         {
-            var urlAddress = string.Format(url, city);
+            var query = HttpUtility.ParseQueryString(string.Empty);
+            query["where"] = $"MUNICIPALITY='{city}'";
+            query["outfields"] = "ADDRESS_NUMBER,STREETNAME,SUFFIX";
+            query["f"] = "pjson";
+            var urlAddress = url + query;
 
-            using(var client = new HttpClient())
+            using (var client = new HttpClient())
             {
                 using(HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, urlAddress))
                 {
@@ -36,9 +45,13 @@ namespace DollarAddresses
             }
         }
 
+        /// <summary>
+        /// Convert JSON respresentation of address to objects.
+        /// </summary>
+        /// <param name="json"></param>
+        /// <returns></returns>
         private List<Address> AddressDeserializer(string json)
         {
-            
             var root =  JsonConvert.DeserializeObject<RootObject>(json);
             var addresses = root.features.Select(f => f.attributes);
             return addresses.ToList();

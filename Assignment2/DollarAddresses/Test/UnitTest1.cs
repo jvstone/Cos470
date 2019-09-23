@@ -1,3 +1,4 @@
+using DollarAddresses;
 using NUnit.Framework;
 
 namespace Tests
@@ -17,8 +18,7 @@ namespace Tests
         [TestCase("a b c d", ExpectedResult = 10)]
         public int TestDollarAddressHelperStringToIntegerValue(string input)
         {
-            var helper = new DollarAddresses.DollarAddressHelper(64);
-            return helper.StringToIntegerValue(input);
+            return DollarAddressHelper.StringToIntegerValue(input);
         }
     }
 }

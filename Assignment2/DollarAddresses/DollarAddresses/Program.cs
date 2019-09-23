@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace DollarAddresses
 {
@@ -13,13 +12,18 @@ namespace DollarAddresses
                               .AddJsonFile("appsettings.json", false, true)
                               .Build();
 
-            var offset = int.Parse( config["CharOffset"]);
             var client = new AddressApiClient(config["URL"], config["City"]);
 
             var dollarAddresses = DollarAddressHelper.GetDollarAddresses(client.GetAddressesFromApi());
             OutputAddressesToConsole(dollarAddresses, config["City"]);
+            Console.Read();
         }
 
+        /// <summary>
+        /// Output the address to the console where the address number is equal to the integer value of the street
+        /// </summary>
+        /// <param name="addresses"></param>
+        /// <param name="city"></param>
         public static void OutputAddressesToConsole(List<Address> addresses, string city)
         {
             Console.WriteLine($"The following are dollar addresses in {city}");
