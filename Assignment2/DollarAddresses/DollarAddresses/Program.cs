@@ -14,11 +14,9 @@ namespace DollarAddresses
                               .Build();
 
             var offset = int.Parse( config["CharOffset"]);
-            var dollarAddressHelper = new DollarAddressHelper(offset);
-
             var client = new AddressApiClient(config["URL"], config["City"]);
 
-            var dollarAddresses = dollarAddressHelper.GetDollarAddresses(client.GetAddressesFromApi());
+            var dollarAddresses = DollarAddressHelper.GetDollarAddresses(client.GetAddressesFromApi());
             OutputAddressesToConsole(dollarAddresses, config["City"]);
         }
 

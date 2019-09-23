@@ -6,20 +6,13 @@ namespace DollarAddresses
 {
     public class DollarAddressHelper
     {
-        int characterOffset;
-
-
-        public DollarAddressHelper(int characterOffset)
-        {
-            this.characterOffset = characterOffset;
-        }
 
         /// <summary>
         /// Return a list of where the Streename has an integer value that matches the address number
         /// </summary>
         /// <param name="words"></param>
         /// <returns></returns>
-        public List<Address> GetDollarAddresses(List<Address> addresses)
+        public static List<Address> GetDollarAddresses(List<Address> addresses)
         {
             return addresses.Where(a => StringToIntegerValue((a.STREETNAME + a.SUFFIX)) == a.ADDRESS_NUMBER).ToList();
         }
@@ -29,19 +22,9 @@ namespace DollarAddresses
         /// </summary>
         /// <param name="character"></param>
         /// <returns></returns>
-        public  int StringToIntegerValue(String address)
+        public static int StringToIntegerValue(String address)
         {
-            int wordValue = 0;
-            foreach (char character in address)
-            {
-                int charVal = 0;
-                if (char.IsLetter(character))
-                {
-                    charVal = (int)Char.ToUpper(character) - characterOffset;
-                }
-                wordValue += charVal;
-            }
-            return wordValue;
+            return address.Where(c => char.IsLetter(c)).Sum(c=> Char.ToUpper(c)-'A' + 1);
         }
     }
 }
