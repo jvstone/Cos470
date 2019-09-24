@@ -87,21 +87,11 @@ namespace DollarWords
         /// <summary>
         /// Returns an integer value of a character where letter a-z correspond to 1-26 and all other characters to 0.
         /// </summary>
-        /// <param name="character"></param>
+        /// <param name="word"></param>
         /// <returns></returns>
         public static int StringToIntegerValue(String word)
         {
-            int wordValue = 0;
-            foreach (char character in word)
-            {
-                int charVal = 0;
-                if (char.IsLetter(character))
-                {
-                    charVal = (int)Char.ToUpper(character) - CharacterOffset;
-                }
-                wordValue += charVal;
-            }
-            return wordValue;
+            return word.Where(c => Char.IsLetter(c)).Sum(c => Char.ToUpper(c) - 'A' + 1);
         }
 
         /// <summary>
