@@ -14,6 +14,7 @@ namespace DollarAddresses
         /// <returns></returns>
         public static List<Address> GetDollarAddresses(List<Address> addresses)
         {
+            addresses = addresses ?? new List<Address>();
             return addresses.Where(a => StringToIntegerValue((a.STREETNAME + a.SUFFIX)) == a.ADDRESS_NUMBER).ToList();
         }
 
@@ -24,7 +25,7 @@ namespace DollarAddresses
         /// <returns></returns>
         public static int StringToIntegerValue(String address)
         {
-            return address.Where(c => char.IsLetter(c)).Sum(c=> Char.ToUpper(c)-'A' + 1);
+            return (address ?? "").Where(c => char.IsLetter(c)).Sum(c => Char.ToUpper(c)-'A' + 1);
         }
     }
 }
