@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Tests
 {
-    public class Tests
+    public class HaveWeMetUtilsTests
     {
         [SetUp]
         public void Setup()

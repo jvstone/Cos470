@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace HaveWeMet
 {
@@ -7,6 +8,15 @@ namespace HaveWeMet
         public string timestampMs { get; set; }
         public long latitudeE7 { get; set; }
         public long longitudeE7 { get; set; }
+        public DateTimeOffset date
+        {
+            get {
+                long ms;
+                long.TryParse(timestampMs, out ms);
+                return DateTimeOffset.FromUnixTimeMilliseconds(ms);
+            }
+            
+        }
     }
 
     public class Locations
