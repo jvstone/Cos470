@@ -30,5 +30,43 @@ namespace HaveWeMet
         {
             return Math.Abs((date1 - date2).TotalMilliseconds) <= offset;      
         }
+
+        /// <summary>
+        /// Use haversine formula to determine the distance between two coordinates
+        /// and check if the distance is within a threshhold
+        /// </summary>
+        /// <returns></returns>
+        public static bool CheckLocationsOverlap(Location loc1, Location loc2, double threshold)
+        {
+            var distance = GetDistanceBetween(loc1, loc2);
+            return distance <= threshold;
+        }
+
+
+        /// <summary>
+        /// Use the Haversine formulat to determine the distance in meters between
+        /// two points. 
+        /// </summary>
+        /// <param name="loc1"></param>
+        /// <param name="loc2"></param>
+        /// <returns></returns>
+        public static double GetDistanceBetween(Location loc1, Location loc2)
+        {
+            var radius = 6371000; //Radius in km
+            var distanceLat = DegreesToRadians(loc1.latitude - loc2.latitude);
+            var distanceLong = DegreesToRadians(loc1.longitude - loc2.longitude);
+
+            double a = Math.Sin(distanceLat / 2) * Math.Sin(distanceLat / 2)
+                        + Math.Cos(DegreesToRadians(loc1.latitude)) * Math.Cos(DegreesToRadians(loc2.latitude))
+                        * Math.Sin(distanceLong / 2) * Math.Sin(distanceLong / 2);
+            double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
+            return radius * c;
+        }
+
+        private static double DegreesToRadians(double degrees)
+        {
+            return degrees * Math.PI / 180;
+        }
     }
+
 }
