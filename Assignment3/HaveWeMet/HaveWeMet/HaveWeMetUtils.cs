@@ -26,6 +26,13 @@ namespace HaveWeMet
             return date;
         }
 
+        /// <summary>
+        /// Checks if two times overlap within a certain threshold
+        /// </summary>
+        /// <param name="date1"></param>
+        /// <param name="date2"></param>
+        /// <param name="offset">In milliseconds</param>
+        /// <returns></returns>
         public static bool CheckTimesOverlap(DateTimeOffset date1, DateTimeOffset date2, long offset = 0)
         {
             return Math.Abs((date1 - date2).TotalMilliseconds) <= offset;      
@@ -33,7 +40,7 @@ namespace HaveWeMet
 
         /// <summary>
         /// Use haversine formula to determine the distance between two coordinates
-        /// and check if the distance is within a threshhold
+        /// and check if the distance is within a threshhold in meters
         /// </summary>
         /// <returns></returns>
         public static bool CheckLocationsOverlap(Location loc1, Location loc2, double threshold)
