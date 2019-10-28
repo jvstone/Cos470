@@ -14,18 +14,21 @@ namespace HaveWeMetAPI.Controllers
     [ApiController]
     public class HaveWeMetController : ControllerBase
     {
-        Dictionary<String, List<Location>> locationHistories = new Dictionary<String, List<Location>>();
+        static Dictionary<String, List<Location>> locationHistories = new Dictionary<String, List<Location>>();
         public HaveWeMetController()
         {
-            string json;
-            var config = new ConfigurationBuilder()
-                              .AddJsonFile("appsettings.json", false, true)
-                              .Build();
-            using(StreamReader stream = new StreamReader(config["DataPath"]))
+            if (locationHistories.Count == 0)
             {
-                 json = stream.ReadToEnd();
+                string json;
+                var config = new ConfigurationBuilder()
+                                  .AddJsonFile("appsettings.json", false, true)
+                                  .Build();
+                using (StreamReader stream = new StreamReader(config["DataPath"]))
+                {
+                    json = stream.ReadToEnd();
+                }
+                locationHistories.Add("Jen", HaveWeMetUtils.DeserializeJsonLocationHistory(json));
             }
-            locationHistories.Add("Jen", HaveWeMetUtils.DeserializeJsonLocationHistory(json));
 
         }
         // GET: api/HaveWeMet
@@ -71,21 +74,38 @@ namespace HaveWeMetAPI.Controllers
         }
 
         // POST: api/HaveWeMet
-        [HttpPost]
-        public void Post([FromBody] string value)
+        [HttpPost("{id}")]
+        public void Post(String id, [FromBody] Locations locs)
         {
+            if (!locationHistories.ContainsKey(id))
+            {
+                locationHistories.Add(id, locs.locations);
+            }
         }
 
         // PUT: api/HaveWeMet/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public void Put(string id, [FromBody] Locations loc)
         {
+            if (locationHistories.ContainsKey(id))
+            {
+                locationHistories[id] = loc.locations;
+            }
+            else
+            {
+                locationHistories.Add(id, loc.locations);
+            }
+
         }
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public void Delete(string id)
         {
+            if (locationHistories.ContainsKey(id))
+            {
+                locationHistories.Remove(id);
+            }
         }
     }
 }
